@@ -1,4 +1,5 @@
 <?php
+session_start();
 require('dbconnect.php');
 
 if($_COOKIE['email'] !==''){
@@ -7,9 +8,9 @@ if($_COOKIE['email'] !==''){
 
 if(!empty($_POST)){
   $email = $_POST['email'];
-  
+
   if($_POST['email'] !== '' && $_POST['password'] !==''){
-    $login = $db->prepare('SELECT * FROM memners WHERE email=? AND password=?');
+    $login = $db->prepare('SELECT * FROM members WHERE email=? AND password=?');
     $login->execute(array(
       $_POST['email'],
       sha1($_POST['password'])
@@ -65,12 +66,13 @@ if(!empty($_POST)){
           <?php if ($error['login'] === 'failed'): ?>
             <p class="error">*ログインに失敗しました。正しくご記入ください。</p>
           <?php endif; ?>
-
         </dd>
+
         <dt>パスワード</dt>
         <dd>
           <input type="password" name="password" size="35" maxlength="255" value="<?php print(htmlspecialchars($_POST['password'], ENT_QUOTES)); ?>" />
         </dd>
+
         <dt>ログイン情報の記録</dt>
         <dd>
           <input id="save" type="checkbox" name="save" value="on">
